@@ -5,6 +5,7 @@ open Suave.Http
 open Suave.Http.Applicatives
 open Suave.Http.Successful
 open Suave.Types
+open Suave.Web
 
 //let routes =
 //  choose
@@ -13,5 +14,5 @@ open Suave.Types
 
 [<EntryPoint>]
 let main argv =
-    startWebServer Suave.Web.defaultConfig (OK "Hello World!")
+    startWebServer defaultConfig (OK "Hello World!")
     0
