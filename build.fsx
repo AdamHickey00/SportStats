@@ -5,7 +5,7 @@ open Fake
 
 // Directories
 let buildDir  = "./build"
-let appReferences = !! "*.fsproj"
+let appReferences = !! "*.sln"
 
 // Targets
 let clean _ = CleanDirs [buildDir]
