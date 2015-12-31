@@ -1,14 +1,25 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{EF7E1DBA-571F-4C2B-B1CD-8760BF9E84C1}"
 	ProjectSection(SolutionItems) = preProject
 		paket.dependencies = paket.dependencies
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SportStats", "SportStats.fsproj", "{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
