@@ -41,6 +41,13 @@
   <ItemGroup>
     <Compile Include="ServiceTests.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SportStats.fsproj">
+      <Name>SportStats</Name>
+      <Project>{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>

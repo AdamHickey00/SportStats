@@ -24,6 +24,5 @@ let routes =
 
 [<EntryPoint>]
 let main argv =
-    //startWebServer defaultConfig (OK "Hello World22!")
     startWebServer defaultConfig routes
     0
