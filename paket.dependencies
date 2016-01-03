@@ -2,5 +2,8 @@ source https://nuget.org/api/v2
 framework >= net45
 
 nuget FAKE
+nuget FsUnit 1.4.1
 nuget Newtonsoft.Json 7.0.1
 nuget Suave 0.33.0
+nuget xUnit 2.1.0
+nuget xunit.runner.console 2.1.0
