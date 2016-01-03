@@ -14,7 +14,7 @@ let ``Golf hole in ones Tiger Woods``() =
   let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Accomplishment\":{\"Case\":\"HoleInOnes\",\"Fields\":[7]}}"
 
   let webPart = SportStats.routes
-  let query = "firastName=Tiger&lastName=Woods"
+  let query = "firstName=Tiger&lastName=Woods"
   let host = "http://localhost/Golf/HoleInOnes?" + query
   let request =
     { HttpRequest.empty with
