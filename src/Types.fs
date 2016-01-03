@@ -9,3 +9,6 @@ type Athlete = {
   LastName : string
   Accomplishment : AccomplishmentType
 }
+
+type IDB =
+  abstract member getHoleInOnes : string -> string -> Athlete
