@@ -31,9 +31,9 @@ let ``Golf hole in ones Tiger Woods``() =
         ctx.response.status |> should equal HttpCode.HTTP_200
 
         // contains json header
-        //ctx.response.headers
-        //|> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
-        //|> should equal true
+        ctx.response.headers
+        |> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
+        |> should equal true
 
         // check resonse
         getResponse ctx.response.content
