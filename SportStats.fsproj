@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src/Types.fs" />
+    <Compile Include="src/Database.fs" />
     <Compile Include="src/SportService.fs" />
     <Compile Include="src/SportStats.fs" />
   </ItemGroup>

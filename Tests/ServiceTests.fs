@@ -11,8 +11,9 @@ let getResponse content =
 
 [<Fact>]
 let ``Golf hole in ones Tiger Woods``() =
-    let webPart = SportStats.routes
+    let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Accomplishment\":{\"Case\":\"HoleInOnes\",\"Fields\":[7]}}"
 
+    let webPart = SportStats.routes
     let query = "firastName=Tiger&lastName=Woods"
     let host = "http://localhost/Golf/HoleInOnes?" + query
     let request =
@@ -37,4 +38,4 @@ let ``Golf hole in ones Tiger Woods``() =
 
         // check resonse
         getResponse ctx.response.content
-        |> should equal "\"Hello 3\""
+        |> should equal expectedResponse

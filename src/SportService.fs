@@ -17,7 +17,7 @@ let getHoleInOnes (ctx : HttpContext) =
   let firstNameChoice = fst (getName ctx)
   let lastNameChoice = snd (getName ctx)
 
-  let result = "Hello 3"
+  let result = Database.getHoleInOnes "Tiger" "Woods"
                |> JsonConvert.SerializeObject
                |> okJSON
 
