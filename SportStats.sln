@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{EF7E1D
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SportStats", "SportStats.fsproj", "{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ServiceTests", "ServiceTests.fsproj", "{c02275b9-b4b4-4e69-a45f-6b6d6b314316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5c6f6b10-5db8-42be-a8d0-986c61a3cf30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{c02275b9-b4b4-4e69-a45f-6b6d6b314316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{c02275b9-b4b4-4e69-a45f-6b6d6b314316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{c02275b9-b4b4-4e69-a45f-6b6d6b314316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{c02275b9-b4b4-4e69-a45f-6b6d6b314316}.Release|Any CPU.Build.0 = Release|Any CPU		
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
