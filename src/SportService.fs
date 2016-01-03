@@ -1,5 +1,6 @@
 module SportService
 
+open Monads.Choice
 open Newtonsoft.Json
 open Suave
 open Suave.Http
@@ -15,15 +16,18 @@ let getName (ctx : HttpContext) =
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
 let getHoleInOnes (ctx : HttpContext) =
-  let firstNameChoice = fst (getName ctx)
-  let lastNameChoice = snd (getName ctx)
 
-  let result = match firstNameChoice with
-               | Choice2Of2 err -> BAD_REQUEST err
-               | Choice1Of2 firstName -> match lastNameChoice with
-                                         | Choice2Of2 err -> BAD_REQUEST err
-                                         | Choice1Of2 lastName -> Database.getHoleInOnes firstName lastName
-                                                                  |> JsonConvert.SerializeObject
-                                                                  |> okJSON
+  let input = choice {
+    let! startDate = fst (getName ctx)
+    let! endDate = snd (getName ctx)
+    return (startDate, endDate)
+  }
+
+  let result =
+    match input with
+    | Choice2Of2 err -> BAD_REQUEST err
+    | Choice1Of2 (first, last) -> Database.getHoleInOnes first last
+                                  |> JsonConvert.SerializeObject
+                                  |> okJSON
 
   result ctx
