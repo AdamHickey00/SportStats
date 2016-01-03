@@ -37,4 +37,4 @@ let ``Golf hole in ones Tiger Woods``() =
 
         // check resonse
         getResponse ctx.response.content
-        |> should equal "Hello 3"
+        |> should equal "\"Hello 3\""

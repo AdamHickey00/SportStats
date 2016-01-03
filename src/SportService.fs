@@ -1,5 +1,6 @@
 module SportService
 
+open Newtonsoft.Json
 open Suave
 open Suave.Http
 open Suave.Http.Successful
@@ -16,4 +17,8 @@ let getHoleInOnes (ctx : HttpContext) =
   let firstNameChoice = fst (getName ctx)
   let lastNameChoice = snd (getName ctx)
 
-  (okJSON "Hello 3") ctx
+  let result = "Hello 3"
+               |> JsonConvert.SerializeObject
+               |> okJSON
+
+  result ctx
