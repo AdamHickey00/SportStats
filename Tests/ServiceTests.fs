@@ -1,7 +1,7 @@
 module ServiceTests
 
 open FsUnit
-open Suave.Types
+open Suave.Http
 open Types
 open Xunit
 

@@ -3,14 +3,13 @@ module SportService
 open Monads.Choice
 open Newtonsoft.Json
 open Suave
-open Suave.Http
-open Suave.Http.RequestErrors
-open Suave.Http.Successful
-open Suave.Types
+open Suave.Operators
+open Suave.RequestErrors
+open Suave.Successful
 open Types
 
 let JSON = Writers.setMimeType "application/json"
-let okJSON s = OK s >>= JSON
+let okJSON s = OK s >=> JSON
 
 let getName (ctx : HttpContext) =
   let r = ctx.request

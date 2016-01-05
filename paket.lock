@@ -9,7 +9,7 @@ NUGET
       NUnit (2.6.4)
     Newtonsoft.Json (7.0.1)
     NUnit (2.6.4)
-    Suave (0.33.0)
+    Suave (1.0.0)
       FSharp.Core (>= 3.1.2.5)
     xunit (2.1.0)
       xunit.assert (2.1.0)
