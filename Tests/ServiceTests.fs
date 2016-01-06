@@ -7,7 +7,7 @@ open Xunit
 
 let fakeDB accomplishment =
   { new IDB with
-      member x.getHoleInOnes first last =
+      member x.GetLowestTournament first last =
           { FirstName = first
             LastName = last
             Accomplishment = accomplishment }
@@ -20,12 +20,12 @@ let getResponse content =
 
 [<Fact>]
 let ``Golf hole in ones Tiger Woods``() =
-  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Accomplishment\":{\"Case\":\"HoleInOnes\",\"Fields\":[7]}}"
-  let db = fakeDB (HoleInOnes 7)
+  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Accomplishment\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
+  let db = fakeDB (LowestTournament -27)
 
   let webPart = SportStats.routes db
   let query = "firstName=Tiger&lastName=Woods"
-  let host = "http://localhost/Golf/HoleInOnes?" + query
+  let host = "http://localhost/Golf/LowestTournament?" + query
   let request =
     { HttpRequest.empty with
         ``method`` = HttpMethod.GET

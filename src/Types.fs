@@ -1,7 +1,7 @@
 module Types
 
 type AccomplishmentType =
-  | HoleInOnes of int
+  | LowestTournament of int
   | HomeRuns of int
 
 type Athlete = {
@@ -11,4 +11,4 @@ type Athlete = {
 }
 
 type IDB =
-  abstract member getHoleInOnes : string -> string -> Athlete
+  abstract member GetLowestTournament : string -> string -> Athlete

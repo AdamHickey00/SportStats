@@ -15,7 +15,7 @@ let getName (ctx : HttpContext) =
   let r = ctx.request
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
-let getHoleInOnes (db:IDB) (ctx : HttpContext) =
+let getLowestTournament (db:IDB) (ctx : HttpContext) =
 
   let input = choice {
     let! startDate = fst (getName ctx)
@@ -26,7 +26,7 @@ let getHoleInOnes (db:IDB) (ctx : HttpContext) =
   let result =
     match input with
     | Choice2Of2 err -> BAD_REQUEST err
-    | Choice1Of2 (first, last) -> db.getHoleInOnes first last
+    | Choice1Of2 (first, last) -> db.GetLowestTournament first last
                                   |> JsonConvert.SerializeObject
                                   |> okJSON
 

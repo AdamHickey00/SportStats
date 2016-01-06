@@ -1,34 +1,26 @@
 module Database
 
 open FSharp.Data
-open FSharp.Data.Runtime
 open Types
-open System.Linq
 
-open System
-open System.Globalization
-open System.IO
-open System.Text
-open System.Text.RegularExpressions
-open FSharp.Data
-open FSharp.Data.HtmlExtensions
-open FSharp.Data.Runtime.StructuralTypes
+type GolfStats = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
 
-type GolfStats = HtmlProvider<"http://www.golfstats.com/search/?stat=11&player=Tiger+Woods&submit=go">
+let getLowestTournament firstName lastName : Athlete =
 
-let getHoleInOnes firstName lastName : Athlete =
-
-  let url = sprintf "http://www.golfstats.com/search/?stat=11&player=%s+%s&submit=go" "Tiger" "Woods"
+  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" "Tiger" "Woods"
   let liveStats = GolfStats.Load(url)
 
-  printfn "tables = %A" (liveStats)
+  let lowestScore =
+    liveStats.Tables.``Low To Par: Tiger WoodsSavePrintBack``.Rows
+    |> Seq.head
+    |> (fun x -> x.``Tiger Woods Final Score To Par``)
 
   { FirstName = firstName
     LastName = lastName
-    Accomplishment = HoleInOnes 7 }
+    Accomplishment = LowestTournament (int lowestScore) }
 
 let DB =
   { new IDB with
-      member x.getHoleInOnes first last =
-        getHoleInOnes first last
+      member x.GetLowestTournament first last =
+        getLowestTournament first last
   }

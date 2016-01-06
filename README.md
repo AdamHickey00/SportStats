@@ -19,7 +19,7 @@ To start the http service
 
 Hole in ones
 ```
-GET http://127.0.0.1:8083/Golf/HoleInOnes?firstName=Tiger&lastName=Woods
+GET http://127.0.0.1:8083/Golf/LowestTournament?firstName=Tiger&lastName=Woods
 ```
 
 JSON Response

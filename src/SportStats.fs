@@ -9,7 +9,7 @@ open Types
 let routes (db:IDB) =
   choose
     [ GET >=>
-      choose [ path "/Golf/HoleInOnes" >=> SportService.getHoleInOnes db ]]
+      choose [ path "/Golf/LowestTournament" >=> SportService.getLowestTournament db ]]
 
 [<EntryPoint>]
 let main argv =
