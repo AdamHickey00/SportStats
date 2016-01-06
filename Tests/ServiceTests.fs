@@ -5,12 +5,12 @@ open Suave.Http
 open Types
 open Xunit
 
-let fakeDB accomplishment =
+let fakeDB stat =
   { new IDB with
       member x.GetLowestTournament first last =
           { FirstName = first
             LastName = last
-            Accomplishment = accomplishment }
+            Stat = stat }
   }
 
 let getResponse content =
@@ -20,7 +20,7 @@ let getResponse content =
 
 [<Fact>]
 let ``Golf hole in ones Tiger Woods``() =
-  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Accomplishment\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
+  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
   let db = fakeDB (LowestTournament -27)
 
   let webPart = SportStats.routes db

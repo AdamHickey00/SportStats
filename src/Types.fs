@@ -1,13 +1,13 @@
 module Types
 
-type AccomplishmentType =
+type StatType =
   | LowestTournament of int
   | HomeRuns of int
 
 type Athlete = {
   FirstName : string
   LastName : string
-  Accomplishment : AccomplishmentType
+  Stat : StatType
 }
 
 type IDB =

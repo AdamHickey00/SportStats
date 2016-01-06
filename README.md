@@ -27,9 +27,9 @@ JSON Response
 {
   "FirstName": "Tiger",
   "LastName": "Woods",
-  "Accomplishment": {
-    "Case": "HoleInOnes",
-    "Fields": [7]
+  "Stat": {
+    "Case": "LowestTournament",
+    "Fields": [-27]
   }
 }
 ```
