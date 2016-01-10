@@ -36,25 +36,29 @@ let getLowestRound firstName lastName : Athlete =
   let stats = LowestRoundPage.Load(url)
   let tables = stats.Html.Descendants ["table"]
   let rowPosition = 1
-  let columnPosition = 3
+  let columnPosition = 2
 
   match Seq.length tables with
   | 0 -> { FirstName = firstName
            LastName = lastName
            Stat = LowestTournament (int 0) }
 
-  | _ -> let lowestRound =
+  | _ -> let tournamentScores =
            tables
            |> Seq.head
            |> (fun x -> (x.Descendants ["tr"]).ElementAt(rowPosition))
            |> (fun x -> (x.Descendants ["td"]).ElementAt(columnPosition))
            |> (fun x -> x.InnerText())
 
-         printfn "Lowest round = %s" lowestRound
+         // value like "66-61-68-70=265"
+         let lowestRound =
+          (tournamentScores.Split [|'='|]).[0].Split [|'-'|]
+          |> Array.map (fun x -> int x)
+          |> Array.min
 
          { FirstName = firstName
            LastName = lastName
-           Stat = LowestRound (decimal 55) }
+           Stat = LowestRound (decimal lowestRound) }
 
 let DB =
   { new IDB with
