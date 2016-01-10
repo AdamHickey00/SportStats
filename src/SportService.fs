@@ -34,5 +34,5 @@ let processRoute statFunc (ctx : HttpContext) =
 let getLowestTournament (db:IDB) (ctx : HttpContext) =
   processRoute db.GetLowestTournament ctx
 
-let getLongestDriveAvg (db:IDB) (ctx : HttpContext) =
-  processRoute db.GetLongestDriveAvg ctx
+let getLowestRound (db:IDB) (ctx : HttpContext) =
+  processRoute db.GetLowestRound ctx

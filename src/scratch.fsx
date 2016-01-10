@@ -11,3 +11,6 @@ let input first last =
 
 let test : Choice<(string * string), string> =
   input (Choice2Of2 "Adam") (Choice1Of2 "Hickey")
+
+let something = "342.0"
+decimal something
