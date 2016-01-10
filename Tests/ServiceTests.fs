@@ -11,6 +11,10 @@ let fakeDB stat =
           { FirstName = first
             LastName = last
             Stat = stat }
+      member x.GetLongestDriveAvg first last =
+          { FirstName = first
+            LastName = last
+            Stat = stat }
   }
 
 let getResponse content =

@@ -16,7 +16,6 @@ let getName (ctx : HttpContext) =
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
 let getLowestTournament (db:IDB) (ctx : HttpContext) =
-
   let input = choice {
     let! startDate = fst (getName ctx)
     let! endDate = snd (getName ctx)
@@ -27,6 +26,22 @@ let getLowestTournament (db:IDB) (ctx : HttpContext) =
     match input with
     | Choice2Of2 err -> BAD_REQUEST err
     | Choice1Of2 (first, last) -> db.GetLowestTournament first last
+                                  |> JsonConvert.SerializeObject
+                                  |> okJSON
+
+  result ctx
+
+let getLongestDriveAvg (db:IDB) (ctx : HttpContext) =
+  let input = choice {
+    let! startDate = fst (getName ctx)
+    let! endDate = snd (getName ctx)
+    return (startDate, endDate)
+  }
+
+  let result =
+    match input with
+    | Choice2Of2 err -> BAD_REQUEST err
+    | Choice1Of2 (first, last) -> db.GetLongestDriveAvg first last
                                   |> JsonConvert.SerializeObject
                                   |> okJSON
 
