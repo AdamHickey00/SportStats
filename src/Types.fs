@@ -2,7 +2,7 @@ module Types
 
 type StatType =
   | LowestTournament of int
-  | LowestRound of decimal
+  | LowestRound of int
   | HomeRuns of int
 
 type Athlete = {
