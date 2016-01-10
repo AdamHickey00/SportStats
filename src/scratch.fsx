@@ -16,4 +16,5 @@ let something = "66-61-68-70=265"
 let scores = (something.Split [|'='|]).[0]
 let scores2 = scores.Split [|'-'|]
 Array.map (fun x -> int x) scores2
+|> Array.filter (fun x -> x > 62)
 |> Array.min

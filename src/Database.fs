@@ -5,7 +5,6 @@ open System.Linq
 open Types
 
 type LowestTournamentPage = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
-type LowestRoundPage = HtmlProvider<"http://www.golfstats.com/search/?stat=11&player=Tiger+Woods&submit=go">
 
 let getLowestTournament firstName lastName : Athlete =
 
@@ -32,8 +31,8 @@ let getLowestTournament firstName lastName : Athlete =
            Stat = LowestTournament (int lowestScore) }
 
 let getLowestRound firstName lastName : Athlete =
-  let url = sprintf "http://www.golfstats.com/search/?stat=11&player=%s+%s&submit=go" firstName lastName
-  let stats = LowestRoundPage.Load(url)
+  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" firstName lastName
+  let stats = LowestTournamentPage.Load(url)
   let tables = stats.Html.Descendants ["table"]
   let columnPosition = 2
 
@@ -56,6 +55,7 @@ let getLowestRound firstName lastName : Athlete =
                         |> Array.map (fun x -> int x)
                         |> Array.min
                       )
+           |> Seq.filter (fun x -> x > 50) // filter out bad data
            |> Seq.min
 
          { FirstName = firstName
