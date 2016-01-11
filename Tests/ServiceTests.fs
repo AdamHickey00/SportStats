@@ -54,13 +54,13 @@ let validate expectedResponse result =
 [<Fact>]
 let ``Golf lowest tournament total Tiger Woods``() =
   let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
-  
+
   getResult "Tiger" "Woods" "LowestTournament" (fakeDB (LowestTournament -27))
   |> validate expectedResponse
 
 [<Fact>]
 let ``Golf lowest tournament round Tiger Woods``() =
-  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestRound\",\"Fields\":[61]}}"
+  let expectedResponse = "{\"FirstName\":\"Lee\",\"LastName\":\"Westwood\",\"Stat\":{\"Case\":\"LowestRound\",\"Fields\":[60]}}"
 
-  getResult "Tiger" "Woods" "LowestRound" (fakeDB (LowestRound 61))
+  getResult "Lee" "Westwood" "LowestRound" (fakeDB (LowestRound 60))
   |> validate expectedResponse
