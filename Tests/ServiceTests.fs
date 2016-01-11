@@ -22,34 +22,45 @@ let getResponse content =
   | Bytes byteValue -> System.Text.Encoding.ASCII.GetString byteValue
   | _ -> failwith "Bad response"
 
-[<Fact>]
-let ``Golf hole in ones Tiger Woods``() =
-  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
-  let db = fakeDB (LowestTournament -27)
-
+let getResult firstName lastName route db =
   let webPart = SportStats.routes db
-  let query = "firstName=Tiger&lastName=Woods"
-  let host = "http://localhost/Golf/LowestTournament?" + query
+  let query = sprintf "firstName=%s&lastName=%s" firstName lastName
+  let host = sprintf "http://localhost/Golf/%s?%s" route query
+
   let request =
     { HttpRequest.empty with
         ``method`` = HttpMethod.GET
         url = new System.Uri(host); rawQuery = query }
 
   let context = { HttpContext.empty with request = request }
-  let result = webPart context |> Async.RunSynchronously
+  webPart context |> Async.RunSynchronously
 
+let validate expectedResponse result =
   match result with
   | None -> failwith "Route not found"
   | Some ctx ->
+    // response good
+    ctx.response.status |> should equal HttpCode.HTTP_200
 
-      // response good
-      ctx.response.status |> should equal HttpCode.HTTP_200
+    // contains json header
+    ctx.response.headers
+    |> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
+    |> should equal true
 
-      // contains json header
-      ctx.response.headers
-      |> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
-      |> should equal true
+    // check resonse
+    getResponse ctx.response.content
+    |> should equal expectedResponse
 
-      // check resonse
-      getResponse ctx.response.content
-      |> should equal expectedResponse
+[<Fact>]
+let ``Golf lowest tournament total Tiger Woods``() =
+  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
+  
+  getResult "Tiger" "Woods" "LowestTournament" (fakeDB (LowestTournament -27))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf lowest tournament round Tiger Woods``() =
+  let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestRound\",\"Fields\":[61]}}"
+
+  getResult "Tiger" "Woods" "LowestRound" (fakeDB (LowestRound 61))
+  |> validate expectedResponse
