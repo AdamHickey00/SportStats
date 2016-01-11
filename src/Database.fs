@@ -32,7 +32,7 @@ let totalEarningsMap columnIndex (row:HtmlNode) : int =
 let lowestTournamentMap columnIndex (row:HtmlNode) : int =
   int (getTextFromColumn columnIndex row)
 
-let getGolfStat (input:Input) mapFunc filterFunc (valueFunc: int -> StatType) (totalFunc: seq<'a> -> 'a) : Athlete =
+let getGolfStat (input:Input) mapFunc filterFunc (valueFunc: int -> StatType) (totalFunc: seq<'a> -> int) : Athlete =
   let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
   let stats = LowestTournamentPage.Load(url)
   let tables = stats.Html.Descendants ["table"]
