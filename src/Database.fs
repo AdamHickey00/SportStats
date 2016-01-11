@@ -6,28 +6,40 @@ open Types
 
 type LowestTournamentPage = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
 
-let getTextFromColumn (columnPosition:int) (row:HtmlNode) =
-  (row.Descendants ["td"]).ElementAt(columnPosition).InnerText()
+type Input = {
+  FirstName : string
+  LastName : string
+  ColumnIndex : int
+}
 
-let lowestRoundMap (columnPosition:int) (row:HtmlNode) : int =
-  let columnValue = getTextFromColumn columnPosition row
+let getTextFromColumn columnIndex (row:HtmlNode) =
+  (row.Descendants ["td"]).ElementAt(columnIndex).InnerText()
+
+let lowestRoundMap columnIndex (row:HtmlNode) : int =
+  let columnValue = getTextFromColumn columnIndex row
 
   // value like "66-61-68-70=265"
   (columnValue.Split [|'='|]).[0].Split [|'-'|]
   |> Array.map (fun x -> int x)
   |> Array.min
 
-let lowestTournamentMap (columnPosition:int) (row:HtmlNode) : int =
-  int (getTextFromColumn columnPosition row)
+let totalEarningsMap columnIndex (row:HtmlNode) : int =
+  let columnValue = getTextFromColumn columnIndex row
 
-let getGolfStat firstName lastName columnPosition mapFunc filterFunc (valueFunc: int -> StatType) : Athlete =
-  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" firstName lastName
+  // take only numbers
+  int (columnValue.Replace("$", "").Replace(",", "").Replace(" ", "").Replace("~", ""))
+
+let lowestTournamentMap columnIndex (row:HtmlNode) : int =
+  int (getTextFromColumn columnIndex row)
+
+let getGolfStat (input:Input) mapFunc filterFunc (valueFunc: int -> StatType) : Athlete =
+  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
   let stats = LowestTournamentPage.Load(url)
   let tables = stats.Html.Descendants ["table"]
 
   match Seq.length tables with
-  | 0 -> { FirstName = firstName
-           LastName = lastName
+  | 0 -> { FirstName = input.FirstName
+           LastName = input.LastName
            Stat = LowestTournament (int 0) }
 
   | _ -> let value =
@@ -36,19 +48,25 @@ let getGolfStat firstName lastName columnPosition mapFunc filterFunc (valueFunc:
            |> (fun x -> x.Descendants ["tbody"])
            |> Seq.head
            |> (fun x -> (x.Descendants ["tr"]))
-           |> Seq.map (mapFunc columnPosition)
+           |> Seq.map (mapFunc input.ColumnIndex)
            |> Seq.filter filterFunc
            |> Seq.min
 
-         { FirstName = firstName
-           LastName = lastName
+         { FirstName = input.FirstName
+           LastName = input.LastName
            Stat = valueFunc value }
 
 let getLowestTournament firstName lastName : Athlete =
-  getGolfStat firstName lastName 3 lowestTournamentMap (fun x -> x < 0) (fun y -> LowestTournament y)
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 3 }
+  getGolfStat input lowestTournamentMap (fun x -> x < 0) (fun y -> LowestTournament y)
 
 let getLowestRound firstName lastName : Athlete =
-  getGolfStat firstName lastName 2 lowestRoundMap (fun x -> x > 50) (fun y -> LowestRound y)
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 2 }
+  getGolfStat input lowestRoundMap (fun x -> x > 50) (fun y -> LowestRound y)
+
+let getTotalGolfEarnings firstName lastName : Athlete =
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> TotalEarnings y)
 
 let DB =
   { new IDB with
@@ -56,4 +74,6 @@ let DB =
         getLowestTournament first last
       member x.GetLowestRound first last =
         getLowestRound first last
+      member x.GetTotalGolfEarnings first last =
+        getTotalGolfEarnings first last
   }

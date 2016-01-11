@@ -6,15 +6,15 @@ open Types
 open Xunit
 
 let fakeDB stat =
+  let getAthlete first last =
+    { FirstName = first
+      LastName = last
+      Stat = stat }
+
   { new IDB with
-      member x.GetLowestTournament first last =
-          { FirstName = first
-            LastName = last
-            Stat = stat }
-      member x.GetLowestRound first last =
-          { FirstName = first
-            LastName = last
-            Stat = stat }
+      member x.GetLowestTournament first last = getAthlete first last
+      member x.GetLowestRound first last = getAthlete first last
+      member x.GetTotalGolfEarnings first last = getAthlete first last
   }
 
 let getResponse content =
@@ -59,8 +59,15 @@ let ``Golf lowest tournament total Tiger Woods``() =
   |> validate expectedResponse
 
 [<Fact>]
-let ``Golf lowest tournament round Tiger Woods``() =
+let ``Golf lowest tournament round Lee Westwood``() =
   let expectedResponse = "{\"FirstName\":\"Lee\",\"LastName\":\"Westwood\",\"Stat\":{\"Case\":\"LowestRound\",\"Fields\":[60]}}"
 
   getResult "Lee" "Westwood" "LowestRound" (fakeDB (LowestRound 60))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf total earnings Phil Mickelson``() =
+  let expectedResponse = "{\"FirstName\":\"Phil\",\"LastName\":\"Mickelson\",\"Stat\":{\"Case\":\"TotalEarnings\",\"Fields\":[6700931]}}"
+
+  getResult "Phil" "Mickelson" "TotalEarnings" (fakeDB (TotalEarnings 6700931))
   |> validate expectedResponse

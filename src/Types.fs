@@ -3,6 +3,7 @@ module Types
 type StatType =
   | LowestTournament of int
   | LowestRound of int
+  | TotalEarnings of int
   | HomeRuns of int
 
 type Athlete = {
@@ -14,3 +15,4 @@ type Athlete = {
 type IDB =
   abstract member GetLowestTournament : string -> string -> Athlete
   abstract member GetLowestRound : string -> string -> Athlete
+  abstract member GetTotalGolfEarnings : string -> string -> Athlete

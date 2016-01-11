@@ -18,3 +18,6 @@ let scores2 = scores.Split [|'-'|]
 Array.map (fun x -> int x) scores2
 |> Array.filter (fun x -> x > 62)
 |> Array.min
+
+let moneyInput = "$88,000"
+moneyInput.Replace("$", "").Replace(",", "")

@@ -10,7 +10,8 @@ let routes (db:IDB) =
   choose
     [ GET >=>
       choose [ path "/Golf/LowestTournament" >=> SportService.getLowestTournament db
-               path "/Golf/LowestRound" >=> SportService.getLowestRound db ]]
+               path "/Golf/LowestRound" >=> SportService.getLowestRound db
+               path "/Golf/TotalEarnings" >=> SportService.getTotalGolfEarnings db ]]
 
 [<EntryPoint>]
 let main argv =
