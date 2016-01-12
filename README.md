@@ -3,6 +3,15 @@ Http service for serving sport stats
 
 ## Building
 
+Initial build:
+```
+mono ./.paket/paket.bootstrapper.exe
+```
+Then,
+```
+mono ./.paket/paket.exe install
+```
+
 Mono build
 ```shell
 ./build.sh
@@ -15,14 +24,24 @@ To start the http service
 ./start.sh
 ```
 
-## Sample Endpoint Call
+## API endpoints
 
-Hole in ones
+Lowest tournament total
 ```
 GET http://127.0.0.1:8083/Golf/LowestTournament?firstName=Tiger&lastName=Woods
 ```
 
-JSON Response
+Lowest tournament round
+```
+GET http://127.0.0.1:8083/Golf/LowestRound?firstName=Tiger&lastName=Woods
+```
+
+Total tournament earnings
+```
+GET http://127.0.0.1:8083/Golf/TotalEarnings?firstName=Tiger&lastName=Woods
+```
+
+Sample JSON Response
 ```
 {
   "FirstName": "Tiger",
