@@ -15,6 +15,11 @@ type Input = {
 let getTextFromColumn columnIndex (row:HtmlNode) =
   (row.Descendants ["td"]).ElementAt(columnIndex).InnerText()
 
+let stripChars (chars:seq<char>) (value:string) =
+  value
+  |> Seq.filter (fun x -> not (chars |> Seq.exists (fun invalidChar -> invalidChar = x)))
+  |> System.String.Concat
+
 let lowestRoundMap columnIndex (row:HtmlNode) : int =
   let columnValue = getTextFromColumn columnIndex row
 
@@ -27,7 +32,7 @@ let totalEarningsMap columnIndex (row:HtmlNode) : int =
   let columnValue = getTextFromColumn columnIndex row
 
   // take only numbers
-  int (columnValue.Replace("$", "").Replace(",", "").Replace(" ", "").Replace("~", ""))
+  int (stripChars ['$'; '~'; ','; ' '] columnValue)
 
 let lowestTournamentMap columnIndex (row:HtmlNode) : int =
   int (getTextFromColumn columnIndex row)
