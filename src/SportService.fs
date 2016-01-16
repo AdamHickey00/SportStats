@@ -8,8 +8,9 @@ open Suave.RequestErrors
 open Suave.Successful
 open Types
 
+let CORS = Writers.addHeader "Access-Control-Allow-Origin" "*"
 let JSON = Writers.setMimeType "application/json"
-let okJSON s = OK s >=> JSON
+let okJSON s = OK s >=> JSON >=> CORS
 
 let getName (ctx : HttpContext) =
   let r = ctx.request
@@ -38,4 +39,4 @@ let getLowestRound (db:IDB) (ctx : HttpContext) =
   processRoute db.GetLowestRound ctx
 
 let getTotalGolfEarnings (db:IDB) (ctx : HttpContext) =
-  processRoute db.GetTotalGolfEarnings ctx  
+  processRoute db.GetTotalGolfEarnings ctx
