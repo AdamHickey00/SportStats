@@ -1,9 +1,18 @@
 <html>
   <script src="SportStats.js"></script>
   <body>
-    <label>First name:</label><input type="text" id="first" />
-    <label>Last name:</label><input type="text" id="last" />
-    <button type="button" onclick="getStat()">Get stat</button>
-    <label>Stat:</label><div id="stat"></div>
+    <label>First name:</label><input type="text" id="first"></input>
+    <label>Last name:</label><input type="text" id="last"></input><br/>
+
+    <div style="padding-top: 10px;">
+      <button type="button" onclick="getStat('LowestTournament')">Lowest tournament</button>
+      <div id="LowestTournament"></div>
+
+      <button type="button" onclick="getStat('LowestRound')">Lowest round</button>
+      <div id="LowestRound"></div>
+
+      <button type="button" onclick="getStat('TotalEarnings')">Total earnings</button>
+      <div id="TotalEarnings"></div>      
+    </div>
   </body>
 </html>
