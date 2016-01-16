@@ -11,7 +11,7 @@ let appReferences = !! "*.sln"
 // Targets
 let clean _ = CleanDirs [buildDir]
 
-let instal  l () =
+let install () =
     let execParams : Fake.ProcessHelper.ExecParams = {
         Program = "./.paket/paket.exe"
         CommandLine = "install"
