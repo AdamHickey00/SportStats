@@ -5,8 +5,8 @@ open System.Linq
 open Types
 
 type LowestTournamentPage = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
-type BaseballPlayerSearch = HtmlProvider<"http://www.baseballamerica.com/statistics/players/search/">
-type BaseballStatPage = HtmlProvider<"http://m.mlb.com/player/445197/mike-dunn">
+type BaseballPlayerSearch = HtmlProvider<"http://www.baseballamerica.com/statistics/players/search/?name_last=G&srch=alph">
+type BaseballStatPage = HtmlProvider<"http://www.baseballamerica.com/statistics/players/cards/17588">
 
 type Input = {
   FirstName : string
@@ -40,9 +40,20 @@ let lowestTournamentMap columnIndex (row:HtmlNode) : int =
   int (getTextFromColumn columnIndex row)
 
 let getBaseballStat (input:Input) : Athlete =
-  let baseballUrl = sprintf "http://m.mlb.com/player/445197/%s-%s" "mike" "dunn"
-  let playersPage = BaseballStatPage.Load(baseballUrl)
-  let tables = playersPage.Tables
+
+  // get player stat link from search page
+  let lastNameChar = input.LastName.Chars(0)
+  let baseballSearchUrl = sprintf "http://www.baseballamerica.com/statistics/players/search/?name_last=%c&srch=alph" lastNameChar
+  let playersPage = BaseballPlayerSearch.Load(baseballSearchUrl)
+  let tables = playersPage.Html.Descendants ["table"]
+  let value =
+    tables
+      |> Seq.head
+      |> (fun x -> x.Descendants ["tr"])
+      |> Seq.map (fun row -> row.Descendants ["td"])
+      |> Seq.map (fun row -> row.Descendants ["a"])
+
+  printfn "Value = %A" value
 
   { FirstName = input.FirstName
     LastName = input.LastName
@@ -86,7 +97,7 @@ let getTotalGolfEarnings firstName lastName : Athlete =
 
 let getHomeruns firstName lastName : Athlete =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
-  getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> Homeruns y) Seq.sum
+  getBaseballStat input
 
 let getStrikeouts firstName lastName : Athlete =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
