@@ -1,18 +1,36 @@
 <html>
   <script src="SportStats.js"></script>
+  <head>
+    <style>
+      .score {
+        float: right;
+      }
+      .scoreContainer {
+        width: 200px;
+        padding-top: 10px;
+      }
+    </style>
+  </head>
   <body>
-    <label>First name:</label><input type="text" id="first"></input>
-    <label>Last name:</label><input type="text" id="last"></input><br/>
+    <h2>Golf Stats</h2>
+    <label>First name:</label><input type="text" id="first" value="Tiger"></input>
+    <label>Last name:</label><input type="text" id="last" value="Woods"></input><br/>
 
-    <div style="padding-top: 10px;">
-      <button type="button" onclick="getStat('LowestTournament')">Lowest tournament</button>
-      <div id="LowestTournament"></div>
+    <div class="scoreContainer">
+      <div>
+        <button type="button" onclick="getStat('LowestTournament')">Lowest tournament</button>
+        <div id="LowestTournament" class="score">__</div>
+      </div>
 
-      <button type="button" onclick="getStat('LowestRound')">Lowest round</button>
-      <div id="LowestRound"></div>
+      <div>
+        <button type="button" onclick="getStat('LowestRound')">Lowest round</button>
+        <div id="LowestRound" class="score">__</div>
+      </div>
 
-      <button type="button" onclick="getStat('TotalEarnings')">Total earnings</button>
-      <div id="TotalEarnings"></div>      
+      <div>
+        <button type="button" onclick="getStat('TotalEarnings')">Total earnings</button>
+        <div id="TotalEarnings" class="score">__</div>
+      </div>
     </div>
   </body>
 </html>
