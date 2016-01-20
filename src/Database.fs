@@ -5,6 +5,8 @@ open System.Linq
 open Types
 
 type LowestTournamentPage = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
+type BaseballPlayerSearch = HtmlProvider<"http://www.baseballamerica.com/statistics/players/search/">
+type BaseballStatPage = HtmlProvider<"http://m.mlb.com/player/445197/mike-dunn">
 
 type Input = {
   FirstName : string
@@ -36,6 +38,15 @@ let totalEarningsMap columnIndex (row:HtmlNode) : int =
 
 let lowestTournamentMap columnIndex (row:HtmlNode) : int =
   int (getTextFromColumn columnIndex row)
+
+let getBaseballStat (input:Input) : Athlete =
+  let baseballUrl = sprintf "http://m.mlb.com/player/445197/%s-%s" "mike" "dunn"
+  let playersPage = BaseballStatPage.Load(baseballUrl)
+  let tables = playersPage.Tables
+
+  { FirstName = input.FirstName
+    LastName = input.LastName
+    Stat = Homeruns (int 0) }
 
 let getGolfStat (input:Input) mapFunc filterFunc (valueFunc: int -> StatType) (totalFunc: seq<'a> -> int) : Athlete =
   let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
@@ -73,6 +84,18 @@ let getTotalGolfEarnings firstName lastName : Athlete =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
   getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> TotalEarnings y) Seq.sum
 
+let getHomeruns firstName lastName : Athlete =
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> Homeruns y) Seq.sum
+
+let getStrikeouts firstName lastName : Athlete =
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> Strikeouts y) Seq.sum
+
+let getSteals firstName lastName : Athlete =
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  getGolfStat input totalEarningsMap (fun x -> x > 0) (fun y -> Steals y) Seq.sum
+
 let DB =
   { new IDB with
       member x.GetLowestTournament first last =
@@ -81,10 +104,11 @@ let DB =
         getLowestRound first last
       member x.GetTotalGolfEarnings first last =
         getTotalGolfEarnings first last
+
       member x.GetHomeruns first last =
-        getTotalGolfEarnings first last
+        getHomeruns first last
       member x.GetStrikeouts first last =
-        getTotalGolfEarnings first last
+        getStrikeouts first last
       member x.GetSteals first last =
-        getTotalGolfEarnings first last
+        getSteals first last
   }
