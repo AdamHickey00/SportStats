@@ -40,3 +40,12 @@ let getLowestRound (db:IDB) (ctx : HttpContext) =
 
 let getTotalGolfEarnings (db:IDB) (ctx : HttpContext) =
   processRoute db.GetTotalGolfEarnings ctx
+
+let getHomeruns (db:IDB) (ctx : HttpContext) =
+  processRoute db.GetHomeruns ctx
+
+let getStrikeouts (db:IDB) (ctx : HttpContext) =
+  processRoute db.GetStrikeouts ctx
+
+let getSteals (db:IDB) (ctx : HttpContext) =
+  processRoute db.GetSteals ctx

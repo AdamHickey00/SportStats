@@ -81,4 +81,10 @@ let DB =
         getLowestRound first last
       member x.GetTotalGolfEarnings first last =
         getTotalGolfEarnings first last
+      member x.GetHomeruns first last =
+        getTotalGolfEarnings first last
+      member x.GetStrikeouts first last =
+        getTotalGolfEarnings first last
+      member x.GetSteals first last =
+        getTotalGolfEarnings first last
   }

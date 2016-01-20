@@ -15,6 +15,9 @@ let fakeDB stat =
       member x.GetLowestTournament first last = getAthlete first last
       member x.GetLowestRound first last = getAthlete first last
       member x.GetTotalGolfEarnings first last = getAthlete first last
+      member x.GetHomeruns first last = getAthlete first last
+      member x.GetStrikeouts first last = getAthlete first last
+      member x.GetSteals first last = getAthlete first last
   }
 
 let getResponse content =
@@ -25,7 +28,7 @@ let getResponse content =
 let getResult firstName lastName route db =
   let webPart = SportStats.routes db
   let query = sprintf "firstName=%s&lastName=%s" firstName lastName
-  let host = sprintf "http://localhost/Golf/%s?%s" route query
+  let host = sprintf "http://localhost/%s?%s" route query
 
   let request =
     { HttpRequest.empty with
@@ -55,19 +58,40 @@ let validate expectedResponse result =
 let ``Golf lowest tournament total Tiger Woods``() =
   let expectedResponse = "{\"FirstName\":\"Tiger\",\"LastName\":\"Woods\",\"Stat\":{\"Case\":\"LowestTournament\",\"Fields\":[-27]}}"
 
-  getResult "Tiger" "Woods" "LowestTournament" (fakeDB (LowestTournament -27))
+  getResult "Tiger" "Woods" "Golf\LowestTournament" (fakeDB (LowestTournament -27))
   |> validate expectedResponse
 
 [<Fact>]
 let ``Golf lowest tournament round Lee Westwood``() =
   let expectedResponse = "{\"FirstName\":\"Lee\",\"LastName\":\"Westwood\",\"Stat\":{\"Case\":\"LowestRound\",\"Fields\":[60]}}"
 
-  getResult "Lee" "Westwood" "LowestRound" (fakeDB (LowestRound 60))
+  getResult "Lee" "Westwood" "Golf\LowestRound" (fakeDB (LowestRound 60))
   |> validate expectedResponse
 
 [<Fact>]
 let ``Golf total earnings Phil Mickelson``() =
   let expectedResponse = "{\"FirstName\":\"Phil\",\"LastName\":\"Mickelson\",\"Stat\":{\"Case\":\"TotalEarnings\",\"Fields\":[6700931]}}"
 
-  getResult "Phil" "Mickelson" "TotalEarnings" (fakeDB (TotalEarnings 6700931))
+  getResult "Phil" "Mickelson" "Golf\TotalEarnings" (fakeDB (TotalEarnings 6700931))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf homeruns Ken Griffey``() =
+  let expectedResponse = "{\"FirstName\":\"Ken\",\"LastName\":\"Griffey\",\"Stat\":{\"Case\":\"Homeruns\",\"Fields\":[790]}}"
+
+  getResult "Ken" "Griffey" "Baseball\Homeruns" (fakeDB (Homeruns 790))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf strikeouts Ken Griffey``() =
+  let expectedResponse = "{\"FirstName\":\"Ken\",\"LastName\":\"Griffey\",\"Stat\":{\"Case\":\"Strikeouts\",\"Fields\":[1033]}}"
+
+  getResult "Ken" "Griffey" "Baseball\Strikeouts" (fakeDB (Strikeouts 1033))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf steals Ken Griffey``() =
+  let expectedResponse = "{\"FirstName\":\"Ken\",\"LastName\":\"Griffey\",\"Stat\":{\"Case\":\"Steals\",\"Fields\":[234]}}"
+
+  getResult "Ken" "Griffey" "Baseball\Steals" (fakeDB (Steals 234))
   |> validate expectedResponse
