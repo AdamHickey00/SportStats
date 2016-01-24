@@ -1,5 +1,7 @@
 module Money
 
+open Utils
+
 let private addCommas intWithIndex =
   let index = fst intWithIndex
   let value = string (snd intWithIndex)
@@ -9,8 +11,6 @@ let private addCommas intWithIndex =
   else
     value
 
-let private reverse = Seq.fold (fun acc x -> string x + acc) ""
-let private combine = Seq.fold (fun acc x -> acc + x) ""
 let private addIndexes = Seq.mapi (fun i x -> i,x)
 
 let formatMoney (value:int) =

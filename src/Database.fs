@@ -43,8 +43,10 @@ let lowestTournamentMap columnIndex (row:HtmlNode) : int =
 let totalEarningsValue (earnings:int) =
   TotalEarnings (Money.formatMoney earnings)
 
-let getBaseballStat (input:Input) : Athlete =
+let isPlayer name (link:HtmlNode)  =
+  System.String.Equals(link.InnerText(), name, System.StringComparison.OrdinalIgnoreCase)
 
+let getBaseballStat (input:Input) : Athlete =
   // get player stat link from search page
   let name = input.FirstName + " " + input.LastName
   let lastNameChar = input.LastName.Chars(0)
@@ -55,17 +57,22 @@ let getBaseballStat (input:Input) : Athlete =
     tables
       |> Seq.item 2 // take third
       |> (fun x -> x.Descendants ["a"])
-      |> Seq.filter (fun x -> System.String.Equals(x.InnerText(), name, System.StringComparison.OrdinalIgnoreCase))
-      |> Seq.head
+      |> Seq.filter (isPlayer name)
+      |> Seq.toList
 
-  let relativePath = value.TryGetAttribute("href").Value
-  let link = sprintf "http://www.baseballamerica.com%s" (relativePath.Value())
+  match value with
+  | [] -> { FirstName = input.FirstName
+            LastName = input.LastName
+            Stat = Homeruns (int 0) }
+  | element::elements ->
+    let relativePath = element.TryGetAttribute("href").Value
+    let link = sprintf "http://www.baseballamerica.com%s" (relativePath.Value())
 
-  printfn "Value = %A" link
+    printfn "Value = %A" link
 
-  { FirstName = input.FirstName
-    LastName = input.LastName
-    Stat = Homeruns (int 0) }
+    { FirstName = input.FirstName
+      LastName = input.LastName
+      Stat = Homeruns (int 1) }
 
 let getGolfStat (input:Input) mapFunc filterFunc (valueFunc: int -> StatType) (totalFunc: seq<'a> -> int) : Athlete =
   let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
