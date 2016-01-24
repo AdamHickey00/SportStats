@@ -38,12 +38,13 @@ let getBaseballStat (input:DatabaseInput) : Athlete =
               Stat = Homeruns (int 0) }
   | Some linkValue ->
     let playerPage = BaseballPlayerSearch.Load(linkValue)
+
+    // get first row where first column is total
     let statValue =
       playerPage.Html.Descendants ["tr"]
-      |> Seq.map (fun x -> (HtmlNode.attributeValue "class" x), x)
-      |> Seq.filter (fun x -> (fst x) = "oddrow bi")
+      |> Seq.filter (fun x -> (getTextFromColumn 0 x) = "Total")
       |> Seq.head
-      |> (fun x -> getTextFromColumn 8 (snd x))
+      |> (fun x -> getTextFromColumn 8 x)
 
     { FirstName = input.FirstName
       LastName = input.LastName
