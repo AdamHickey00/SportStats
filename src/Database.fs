@@ -40,6 +40,9 @@ let totalEarningsMap columnIndex (row:HtmlNode) : int =
 let lowestTournamentMap columnIndex (row:HtmlNode) : int =
   int (getTextFromColumn columnIndex row)
 
+let totalEarningsValue (earnings:int) =
+  TotalEarnings (Money.formatMoney earnings)
+
 let getBaseballStat (input:Input) : Athlete =
 
   // get player stat link from search page
@@ -98,7 +101,7 @@ let getLowestRound firstName lastName : Athlete =
 
 let getTotalGolfEarnings firstName lastName : Athlete =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
-  getGolfStat input totalEarningsMap (fun x -> x > 0) LowestRound Seq.sum
+  getGolfStat input totalEarningsMap (fun x -> x > 0) totalEarningsValue Seq.sum
 
 let getHomeruns firstName lastName : Athlete =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }

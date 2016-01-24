@@ -44,6 +44,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src/Money.fs" />
     <Compile Include="src/Monads.fs" />
     <Compile Include="src/Types.fs" />
     <Compile Include="src/Database.fs" />

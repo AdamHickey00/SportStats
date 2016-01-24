@@ -3,7 +3,7 @@ module Types
 type StatType =
   | LowestTournament of int
   | LowestRound of int
-  | TotalEarnings of int
+  | TotalEarnings of string
   | Homeruns of int
   | Strikeouts of int
   | Steals of int
