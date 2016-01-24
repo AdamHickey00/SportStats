@@ -1,7 +1,6 @@
 module BaseballStats
 
 open FSharp.Data
-open System.Linq
 open Types
 open Utils
 
