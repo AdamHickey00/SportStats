@@ -16,8 +16,6 @@ let lowestRoundMap columnIndex (row:HtmlNode) : int =
 
 let totalEarningsMap columnIndex (row:HtmlNode) : int =
   let columnValue = getTextFromColumn columnIndex row
-
-  // take only numbers
   int (stripChars ['$'; '~'; ','; ' '] columnValue)
 
 let lowestTournamentMap columnIndex (row:HtmlNode) : int =
@@ -41,7 +39,7 @@ let getGolfStat (input:DatabaseInput) mapFunc filterFunc (valueFunc: int -> Stat
            |> Seq.head
            |> (fun x -> x.Descendants ["tbody"])
            |> Seq.head
-           |> (fun x -> (x.Descendants ["tr"]))
+           |> (fun x -> x.Descendants ["tr"])
            |> Seq.map (mapFunc input.ColumnIndex)
            |> Seq.filter filterFunc
            |> totalFunc
