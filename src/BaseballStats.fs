@@ -44,20 +44,20 @@ let getBaseballStat (input:DatabaseInput) : Athlete =
       playerPage.Html.Descendants ["tr"]
       |> Seq.filter (fun x -> (getTextFromColumn 0 x) = "Total")
       |> Seq.head
-      |> (fun x -> getTextFromColumn 8 x)
+      |> (fun x -> getTextFromColumn input.ColumnIndex x)
 
     { FirstName = input.FirstName
       LastName = input.LastName
       Stat = Homeruns (int statValue) }
 
 let getHomeruns firstName lastName : Athlete =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8 }
   getBaseballStat input
 
 let getStrikeouts firstName lastName : Athlete =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11 }
   getBaseballStat input
 
 let getSteals firstName lastName : Athlete =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12 }
   getBaseballStat input
