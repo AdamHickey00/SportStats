@@ -3,11 +3,11 @@ module Database
 open FSharp.Data
 open System.Linq
 open Types
+open Utils
 
 type LowestTournamentPage = HtmlProvider<"http://www.golfstats.com/search/?stat=6&player=Tiger+Woods&submit=go">
-type BaseballPlayerSearch = HtmlProvider<"http://www.baseballamerica.com/statistics/players/search/?name_last=G&srch=alph">
-type BaseballStatPage = HtmlProvider<"http://www.baseballamerica.com/statistics/players/cards/17588">
-//value = "/statistics/players/cards/17588"
+type BaseballPlayerSearch = HtmlProvider<"http://search.espn.go.com/ken-griffey-jr/">
+type BaseballStatPage = HtmlProvider<"http://espn.go.com/mlb/player/stats/_/id/2148/ken-griffey-jr">
 
 type Input = {
   FirstName : string
@@ -17,11 +17,6 @@ type Input = {
 
 let getTextFromColumn columnIndex (row:HtmlNode) =
   (row.Descendants ["td"]).ElementAt(columnIndex).InnerText()
-
-let stripChars (chars:seq<char>) (value:string) =
-  value
-  |> Seq.filter (fun x -> not (chars |> Seq.exists (fun invalidChar -> invalidChar = x)))
-  |> System.String.Concat
 
 let lowestRoundMap columnIndex (row:HtmlNode) : int =
   let columnValue = getTextFromColumn columnIndex row
@@ -43,32 +38,34 @@ let lowestTournamentMap columnIndex (row:HtmlNode) : int =
 let totalEarningsValue (earnings:int) =
   TotalEarnings (Money.formatMoney earnings)
 
-let isPlayer name (link:HtmlNode)  =
-  System.String.Equals(link.InnerText(), name, System.StringComparison.OrdinalIgnoreCase)
+let isPlayer name (link:HtmlNode) =
+  let badChars = ['+'; '.']
+  let cleaned = stripChars badChars name
+  let innerTextCleaned = stripChars badChars (link.InnerText())
+  
+  System.String.Equals(innerTextCleaned, cleaned, System.StringComparison.OrdinalIgnoreCase)
 
 let getBaseballStat (input:Input) : Athlete =
-  // get player stat link from search page
+  // get player stat link from search
   let name = input.FirstName + " " + input.LastName
-  let lastNameChar = input.LastName.Chars(0)
-  let baseballSearchUrl = sprintf "http://www.baseballamerica.com/statistics/players/search/?name_last=%c&srch=alph" lastNameChar
+  let baseballSearchUrl = sprintf "http://search.espn.go.com/%s/" (name.Replace(' ', '-'))
   let playersPage = BaseballPlayerSearch.Load(baseballSearchUrl)
-  let tables = playersPage.Html.Descendants ["table"]
+
+  printfn "Search url = %s" baseballSearchUrl
+
   let value =
-    tables
-      |> Seq.item 2 // take third
-      |> (fun x -> x.Descendants ["a"])
-      |> Seq.filter (isPlayer name)
-      |> Seq.toList
+    playersPage.Html.Descendants ["a"]
+    |> Seq.filter (isPlayer name)
+    |> Seq.toList
 
   match value with
   | [] -> { FirstName = input.FirstName
             LastName = input.LastName
             Stat = Homeruns (int 0) }
   | element::elements ->
-    let relativePath = element.TryGetAttribute("href").Value
-    let link = sprintf "http://www.baseballamerica.com%s" (relativePath.Value())
+    let link = element.TryGetAttribute("href").Value.Value()
 
-    printfn "Value = %A" link
+    printfn "Value = %s" link
 
     { FirstName = input.FirstName
       LastName = input.LastName
