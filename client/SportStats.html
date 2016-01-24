@@ -5,31 +5,62 @@
       .score {
         float: right;
       }
+      .name {
+        padding-bottom: 10px;
+      }
+      .golf {
+        float: left;
+      }
+      .baseball {
+        float: right;
+      }
       .scoreContainer {
-        width: 200px;
+        width: 900px;
         padding-top: 10px;
       }
     </style>
   </head>
   <body>
-    <h2>Golf Stats</h2>
-    <label>First name:</label><input type="text" id="first" value="Tiger"></input>
-    <label>Last name:</label><input type="text" id="last" value="Woods"></input><br/>
-
     <div class="scoreContainer">
-      <div>
-        <button type="button" onclick="getStat('LowestTournament')">Lowest tournament</button>
-        <div id="LowestTournament" class="score">__</div>
+
+      <div class="golf">
+        <div class="name">
+          <h2>Golf Stats</h2>
+          <label>First name:</label><input type="text" id="golfFirst" value="Tiger"></input>
+          <label>Last name:</label><input type="text" id="golfLast" value="Woods"></input><br/>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Golf', 'LowestTournament')">Lowest tournament</button>
+          <div id="LowestTournament" class="score">__</div>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Golf', 'LowestRound')">Lowest round</button>
+          <div id="LowestRound" class="score">__</div>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Golf', 'TotalEarnings')">Total earnings</button>
+          <div id="TotalEarnings" class="score">__</div>
+        </div>
       </div>
 
-      <div>
-        <button type="button" onclick="getStat('LowestRound')">Lowest round</button>
-        <div id="LowestRound" class="score">__</div>
-      </div>
-
-      <div>
-        <button type="button" onclick="getStat('TotalEarnings')">Total earnings</button>
-        <div id="TotalEarnings" class="score">__</div>
+      <div class="baseball">
+        <div class="name">
+          <h2>Baseball Stats</h2>
+          <label>First name:</label><input type="text" id="baseballFirst" value="Ken"></input>
+          <label>Last name:</label><input type="text" id="baseballLast" value="Griffey Jr"></input><br/>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Baseball', 'Homeruns')">Homeruns</button>
+          <div id="Homeruns" class="score">__</div>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Baseball', 'Strikeouts')">Strikeouts</button>
+          <div id="Strikeouts" class="score">__</div>
+        </div>
+        <div>
+          <button type="button" onclick="getStat('Baseball', 'Steals')">Steals</button>
+          <div id="Steals" class="score">__</div>
+        </div>
       </div>
     </div>
   </body>

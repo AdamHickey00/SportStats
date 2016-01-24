@@ -44,8 +44,12 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src/Utils.fs" />
+    <Compile Include="src/Money.fs" />
     <Compile Include="src/Monads.fs" />
     <Compile Include="src/Types.fs" />
+    <Compile Include="src/BaseballStats.fs" />
+    <Compile Include="src/GolfStats.fs" />
     <Compile Include="src/Database.fs" />
     <Compile Include="src/SportService.fs" />
     <Compile Include="src/SportStats.fs" />

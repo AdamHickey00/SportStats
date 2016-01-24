@@ -70,9 +70,9 @@ let ``Golf lowest tournament round Lee Westwood``() =
 
 [<Fact>]
 let ``Golf total earnings Phil Mickelson``() =
-  let expectedResponse = "{\"FirstName\":\"Phil\",\"LastName\":\"Mickelson\",\"Stat\":{\"Case\":\"TotalEarnings\",\"Fields\":[6700931]}}"
+  let expectedResponse = "{\"FirstName\":\"Phil\",\"LastName\":\"Mickelson\",\"Stat\":{\"Case\":\"TotalEarnings\",\"Fields\":[\"$6,700,931\"]}}"
 
-  getResult "Phil" "Mickelson" "Golf\TotalEarnings" (fakeDB (TotalEarnings 6700931))
+  getResult "Phil" "Mickelson" "Golf\TotalEarnings" (fakeDB (TotalEarnings "$6,700,931"))
   |> validate expectedResponse
 
 [<Fact>]
