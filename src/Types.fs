@@ -14,6 +14,12 @@ type Athlete = {
   Stat : StatType
 }
 
+type DatabaseInput = {
+  FirstName : string
+  LastName : string
+  ColumnIndex : int
+}
+
 type IDB =
   abstract member GetLowestTournament : string -> string -> Athlete
   abstract member GetLowestRound : string -> string -> Athlete
