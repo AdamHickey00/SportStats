@@ -1,9 +1,14 @@
-function getStat(endpoint) {
+function getStat(sport, endpoint) {
   var request = new XMLHttpRequest();
-  var firstName = document.getElementById('first').value;
-  var lastName = document.getElementById('last').value;;
+  var firstName = document.getElementById('golfFirst').value;
+  var lastName = document.getElementById('golfLast').value;;
 
-  var url = "http://127.0.0.1:8083/Golf/" + endpoint + "?firstName=" + firstName + "&lastName=" + lastName;
+  if (sport === 'Baseball') {
+    firstName = document.getElementById('baseballFirst').value;;
+    lastName = document.getElementById('baseballLast').value;;
+  }
+
+  var url = "http://127.0.0.1:8083/" + sport + "/" + endpoint + "?firstName=" + firstName + "&lastName=" + lastName;
 
   request.onreadystatechange = function() {
     if (request.readyState == 4 && request.status == 200) {
