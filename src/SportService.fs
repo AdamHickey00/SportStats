@@ -16,6 +16,10 @@ let getName (ctx : HttpContext) =
   let r = ctx.request
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
+let failResponse (fail:Failure) =
+  match fail with
+  | RecordNotFound -> NOT_FOUND "Record not found"
+
 let processRoute statFunc (ctx : HttpContext) =
   let input = choice {
     let! firstName = fst (getName ctx)
@@ -26,9 +30,10 @@ let processRoute statFunc (ctx : HttpContext) =
   let result =
     match input with
     | Choice2Of2 err -> BAD_REQUEST err
-    | Choice1Of2 (first, last) -> statFunc first last
-                                  |> JsonConvert.SerializeObject
-                                  |> okJSON
+    | Choice1Of2 (first, last) -> match statFunc first last with
+                                  | Failure f -> failResponse f
+                                  | Success record -> JsonConvert.SerializeObject(record)
+                                                      |> okJSON
 
   result ctx
 

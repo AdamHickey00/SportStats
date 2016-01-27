@@ -29,13 +29,11 @@ let getPlayerLink (input:DatabaseInput) : Option<string> =
   | [] -> None
   | firstLink::elements -> Some (firstLink.TryGetAttribute("href").Value.Value())
 
-let getBaseballStat (input:DatabaseInput) : Athlete =
+let getBaseballStat (input:DatabaseInput) =
   let link = getPlayerLink input
 
   match link with
-  | None -> { FirstName = input.FirstName
-              LastName = input.LastName
-              Stat = Homeruns (int 0) }
+  | None -> Failure RecordNotFound
   | Some linkValue ->
     let playerPage = BaseballPlayerSearch.Load(linkValue)
 
@@ -46,18 +44,18 @@ let getBaseballStat (input:DatabaseInput) : Athlete =
       |> Seq.head
       |> (fun x -> getTextFromColumn input.ColumnIndex x)
 
-    { FirstName = input.FirstName
-      LastName = input.LastName
-      Stat = Homeruns (int statValue) }
+    Success { FirstName = input.FirstName
+              LastName = input.LastName
+              Stat = Homeruns (int statValue) }
 
-let getHomeruns firstName lastName : Athlete =
+let getHomeruns firstName lastName =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8 }
   getBaseballStat input
 
-let getStrikeouts firstName lastName : Athlete =
+let getStrikeouts firstName lastName =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11 }
   getBaseballStat input
 
-let getSteals firstName lastName : Athlete =
+let getSteals firstName lastName =
   let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12 }
   getBaseballStat input

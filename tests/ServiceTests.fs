@@ -7,9 +7,9 @@ open Xunit
 
 let fakeDB stat =
   let getAthlete first last =
-    { FirstName = first
-      LastName = last
-      Stat = stat }
+    Success { FirstName = first
+              LastName = last
+              Stat = stat }
 
   { new IDB with
       member x.GetLowestTournament first last = getAthlete first last
@@ -94,4 +94,11 @@ let ``Golf steals Ken Griffey``() =
   let expectedResponse = "{\"FirstName\":\"Ken\",\"LastName\":\"Griffey\",\"Stat\":{\"Case\":\"Steals\",\"Fields\":[234]}}"
 
   getResult "Ken" "Griffey" "Baseball\Steals" (fakeDB (Steals 234))
+  |> validate expectedResponse
+
+[<Fact>]
+let ``Golf lowest tournament record not found failure``() =
+  let expectedResponse = "Record"
+
+  getResult "Tiger" "Woods" "Golf\LowestTournament" (fakeDB (LowestTournament -27))
   |> validate expectedResponse

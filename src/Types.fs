@@ -1,5 +1,12 @@
 module Types
 
+type Failure =
+  | RecordNotFound
+
+type Response<'a> =
+  | Success of 'a
+  | Failure of Failure
+
 type StatType =
   | LowestTournament of int
   | LowestRound of int
@@ -21,9 +28,9 @@ type DatabaseInput = {
 }
 
 type IDB =
-  abstract member GetLowestTournament : string -> string -> Athlete
-  abstract member GetLowestRound : string -> string -> Athlete
-  abstract member GetTotalGolfEarnings : string -> string -> Athlete
-  abstract member GetHomeruns : string -> string -> Athlete
-  abstract member GetStrikeouts : string -> string -> Athlete
-  abstract member GetSteals : string -> string -> Athlete
+  abstract member GetLowestTournament : string -> string -> Response<Athlete>
+  abstract member GetLowestRound : string -> string -> Response<Athlete>
+  abstract member GetTotalGolfEarnings : string -> string -> Response<Athlete>
+  abstract member GetHomeruns : string -> string -> Response<Athlete>
+  abstract member GetStrikeouts : string -> string -> Response<Athlete>
+  abstract member GetSteals : string -> string -> Response<Athlete>
