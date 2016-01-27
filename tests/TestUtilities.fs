@@ -53,3 +53,14 @@ let validate expectedResponse result =
     // check resonse
     getResponse ctx.response.content
     |> should equal expectedResponse
+
+let validateFailure expectedResponse result =
+  match result with
+  | None -> failwith "Route not found"
+  | Some ctx ->
+    // validate response status
+    ctx.response.status |> should equal HttpCode.HTTP_404
+
+    // check resonse
+    getResponse ctx.response.content
+    |> should equal expectedResponse

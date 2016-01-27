@@ -55,8 +55,7 @@ let ``Golf steals Ken Griffey``() =
 
 [<Fact>]
 let ``Golf lowest tournament record not found failure``() =
-  let expectedResponse = "Record"
-  let athlete = (defaultAthlete "Tiger" "Woods" (LowestTournament -27))
+  let expectedResponse = "Record not found"
 
-  getResult "Tiger" "Woods" "Golf\LowestTournament" (fakeDB athlete)
-  |> validate expectedResponse
+  getResult "Tiger" "Woods" "Golf\LowestTournament" (fakeDB (Failure RecordNotFound))
+  |> validateFailure expectedResponse
