@@ -39,6 +39,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestUtilities.fs" />
     <Compile Include="ServiceTests.fs" />
   </ItemGroup>
   <ItemGroup>

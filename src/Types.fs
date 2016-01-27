@@ -1,11 +1,11 @@
 module Types
 
-type Failure =
+type FailureCode =
   | RecordNotFound
 
 type Response<'a> =
   | Success of 'a
-  | Failure of Failure
+  | Failure of FailureCode
 
 type StatType =
   | LowestTournament of int

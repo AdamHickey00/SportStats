@@ -16,7 +16,7 @@ let getName (ctx : HttpContext) =
   let r = ctx.request
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
-let failResponse (fail:Failure) =
+let failResponse (fail:FailureCode) =
   match fail with
   | RecordNotFound -> NOT_FOUND "Record not found"
 
