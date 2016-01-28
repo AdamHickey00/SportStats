@@ -11,10 +11,14 @@ function getStat(sport, endpoint) {
   var url = "http://127.0.0.1:8083/" + sport + "/" + endpoint + "?firstName=" + firstName + "&lastName=" + lastName;
 
   request.onreadystatechange = function() {
-    if (request.readyState == 4 && request.status == 200) {
-      var response = JSON.parse(request.responseText);
-      var statValue = response.Stat.Fields[0];
-      document.getElementById(endpoint).innerHTML = statValue;
+    if (request.readyState == 4) {
+      if (request.status == 200) {
+        var response = JSON.parse(request.responseText);
+        document.getElementById(endpoint).innerHTML = response.Stat.Fields[0];
+      }
+      else {
+        document.getElementById(endpoint).innerHTML = request.responseText;
+      }
     }
   };
 

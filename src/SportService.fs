@@ -10,9 +10,10 @@ open Types
 
 let CORS = Writers.addHeader "Access-Control-Allow-Origin" "*"
 let JSON = Writers.setMimeType "application/json"
-let okJSON s = OK s >=> JSON >=> CORS
+let resp = JSON >=> CORS
+let okJSON s = OK s >=> resp
 
-let getName (ctx : HttpContext) =
+let name (ctx : HttpContext) =
   let r = ctx.request
   (r.queryParam "firstName"), (r.queryParam "lastName")
 
@@ -22,8 +23,8 @@ let failResponse (fail:FailureCode) =
 
 let processRoute statFunc (ctx : HttpContext) =
   let input = choice {
-    let! firstName = fst (getName ctx)
-    let! lastName = snd (getName ctx)
+    let! firstName = fst (name ctx)
+    let! lastName = snd (name ctx)
     return (firstName, lastName)
   }
 
@@ -31,7 +32,7 @@ let processRoute statFunc (ctx : HttpContext) =
     match input with
     | Choice2Of2 err -> BAD_REQUEST err
     | Choice1Of2 (first, last) -> match statFunc first last with
-                                  | Failure f -> failResponse f
+                                  | Failure f -> (failResponse f) >=> resp
                                   | Success record -> JsonConvert.SerializeObject(record)
                                                       |> okJSON
 
