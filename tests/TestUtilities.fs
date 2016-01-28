@@ -20,12 +20,12 @@ let fakeDB (response:Response<Athlete>) =
       member x.GetSteals first last = response
   }
 
-let getResponse content =
+let response content =
   match content with
   | Bytes byteValue -> System.Text.Encoding.ASCII.GetString byteValue
   | _ -> failwith "Bad response"
 
-let getResult firstName lastName route db =
+let result firstName lastName route db =
   let webPart = SportStats.routes db
   let query = sprintf "firstName=%s&lastName=%s" firstName lastName
   let host = sprintf "http://localhost/%s?%s" route query
@@ -38,29 +38,32 @@ let getResult firstName lastName route db =
   let context = { HttpContext.empty with request = request }
   webPart context |> Async.RunSynchronously
 
-let validate expectedResponse result =
+let context (result:HttpContext option) =
   match result with
   | None -> failwith "Route not found"
-  | Some ctx ->
-    // response good
-    ctx.response.status |> should equal HttpCode.HTTP_200
+  | Some ctx -> ctx
 
-    // contains json header
-    ctx.response.headers
-    |> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
-    |> should equal true
+let validateStatus code ctx =
+  ctx.response.status |> should equal code
+  ctx
 
-    // check resonse
-    getResponse ctx.response.content
-    |> should equal expectedResponse
+let isJson ctx =
+  ctx.response.headers
+  |> List.exists(fun (k,v) -> k = "Content-Type" && v = "application/json")
+  |> should equal true
+  ctx
 
-let validateFailure expectedResponse result =
-  match result with
-  | None -> failwith "Route not found"
-  | Some ctx ->
-    // validate response status
-    ctx.response.status |> should equal HttpCode.HTTP_404
+let validateResponse expectedResponse ctx =
+  response ctx.response.content
+  |> should equal expectedResponse
 
-    // check resonse
-    getResponse ctx.response.content
-    |> should equal expectedResponse
+let validateSuccess expectedResponse (result:HttpContext option) =
+  context result
+  |> validateStatus HttpCode.HTTP_200
+  |> isJson
+  |> validateResponse expectedResponse
+
+let validateFailure expectedResponse code (result:HttpContext option) =
+  context result
+  |> validateStatus code
+  |> validateResponse expectedResponse
