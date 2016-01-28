@@ -67,3 +67,53 @@ let validateFailure expectedResponse code (result:HttpContext option) =
   context result
   |> validateStatus code
   |> validateResponse expectedResponse
+
+let baseballHtml =
+  """<html>
+         <body>
+             <table>
+                 <tr>
+                    <td>1990</td>
+                    <td>SEA</td>
+                    <td>1</td> <!-- GP -->
+                    <td>2</td> <!-- AB -->
+                    <td>3</td> <!-- R -->
+                    <td>4</td> <!-- H -->
+                    <td>5</td> <!-- 2B -->
+                    <td>6</td> <!-- 3B -->
+                    <td>7</td> <!-- HR -->
+                    <td>8</td> <!-- RBI -->
+                    <td>9</td> <!-- BB -->
+                    <td>10</td> <!-- SO -->
+                    <td>11</td> <!-- SB -->
+                    <td>12</td> <!-- CS -->
+                    <td>13</td> <!-- AVG -->
+                    <td>14</td> <!-- OBP -->
+                    <td>15</td> <!-- SLG -->
+                    <td>16</td> <!-- OPS -->
+                    <td>17</td> <!-- WAR -->
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>Total</td>
+                    <td>23</td> <!-- GP -->
+                    <td>24</td> <!-- AB -->
+                    <td>25</td> <!-- R -->
+                    <td>26</td> <!-- H -->
+                    <td>27</td> <!-- 2B -->
+                    <td>28</td> <!-- 3B -->
+                    <td>29</td> <!-- HR -->
+                    <td>30</td> <!-- RBI -->
+                    <td>31</td> <!-- BB -->
+                    <td>32</td> <!-- SO -->
+                    <td>33</td> <!-- SB -->
+                    <td>34</td> <!-- CS -->
+                    <td>35</td> <!-- AVG -->
+                    <td>36</td> <!-- OBP -->
+                    <td>37</td> <!-- SLG -->
+                    <td>38</td> <!-- OPS -->
+                    <td>39</td> <!-- WAR -->
+                </tr>
+          </table>
+      </body>
+  </html>"""
