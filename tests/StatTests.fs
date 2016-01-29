@@ -57,4 +57,29 @@ let ``Golf total earnings``() =
   (GolfStats.stat doc input GolfStats.totalEarningsMap (fun x -> x > 0) Seq.sum)
   |> should equal expected
 
-// record not found 3
+[<Fact>]
+let ``Fail lowest tournament record not found``() =
+  let input = { FirstName = "Rory"; LastName = "Mcilroy"; ColumnIndex = 3; ValueFunc = LowestTournament }
+  let doc = HtmlDocument.Parse golfFailHtml
+
+  match (GolfStats.stat doc input GolfStats.lowestTournamentMap (fun x -> x < 0) Seq.min) with
+  | Failure RecordNotFound -> true
+  | response -> failwith (sprintf "Expected Failure but found %A" response)
+
+[<Fact>]
+let ``Golf lowest round record not found``() =
+  let input = { FirstName = "Tiger"; LastName = "Woods"; ColumnIndex = 2; ValueFunc = LowestRound }
+  let doc = HtmlDocument.Parse golfFailHtml
+
+  match (GolfStats.stat doc input GolfStats.lowestRoundMap (fun x -> x > 50) Seq.min) with
+  | Failure RecordNotFound -> true
+  | response -> failwith (sprintf "Expected Failure but found %A" response)
+
+[<Fact>]
+let ``Golf total earnings record not found``() =
+  let input = { FirstName = "Phil"; LastName = "Mickelson"; ColumnIndex = 4; ValueFunc = GolfStats.totalEarningsValue }
+  let doc = HtmlDocument.Parse golfFailHtml
+
+  match (GolfStats.stat doc input GolfStats.totalEarningsMap (fun x -> x > 0) Seq.sum) with
+  | Failure RecordNotFound -> true
+  | response -> failwith (sprintf "Expected Failure but found %A" response)

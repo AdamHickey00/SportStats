@@ -161,3 +161,6 @@ let golfHtml =
           </table>
       </body>
   </html>"""
+
+[<Literal>]
+let golfFailHtml = """<html><body></body></html>"""
