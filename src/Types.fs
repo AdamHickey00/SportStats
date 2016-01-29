@@ -25,6 +25,7 @@ type DatabaseInput = {
   FirstName : string
   LastName : string
   ColumnIndex : int
+  ValueFunc : int -> StatType
 }
 
 type IDB =

@@ -24,10 +24,8 @@ let lowestTournamentMap columnIndex (row:HtmlNode) : int =
 let totalEarningsValue (earnings:int) =
   TotalEarnings (Money.formatMoney earnings)
 
-let getGolfStat (input:DatabaseInput) mapFunc filterFunc (valueFunc: int -> StatType) (totalFunc: seq<'a> -> int) =
-  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
-  let stats = LowestTournamentPage.Load(url)
-  let tables = stats.Html.Descendants ["table"]
+let stat (html:HtmlDocument) (input:DatabaseInput) mapFunc filterFunc (totalFunc: seq<'a> -> int) =
+  let tables = html.Descendants ["table"]
 
   match Seq.length tables with
   | 0 -> Failure RecordNotFound
@@ -43,16 +41,21 @@ let getGolfStat (input:DatabaseInput) mapFunc filterFunc (valueFunc: int -> Stat
 
          Success { FirstName = input.FirstName
                    LastName = input.LastName
-                   Stat = valueFunc value }
+                   Stat = input.ValueFunc value }
+
+let getGolfStat (input:DatabaseInput) mapFunc filterFunc (totalFunc: seq<'a> -> int) =
+  let url = sprintf "http://www.golfstats.com/search/?stat=6&player=%s+%s&submit=go" input.FirstName input.LastName
+  let stats = LowestTournamentPage.Load(url)
+  stat stats.Html input mapFunc filterFunc totalFunc
 
 let getLowestTournament firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 3 }
-  getGolfStat input lowestTournamentMap (fun x -> x < 0) LowestTournament Seq.min
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 3; ValueFunc = LowestTournament }
+  getGolfStat input lowestTournamentMap (fun x -> x < 0) Seq.min
 
 let getLowestRound firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 2 }
-  getGolfStat input lowestRoundMap (fun x -> x > 50) LowestRound Seq.min
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 2; ValueFunc = LowestRound }
+  getGolfStat input lowestRoundMap (fun x -> x > 50) Seq.min
 
 let getTotalGolfEarnings firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4 }
-  getGolfStat input totalEarningsMap (fun x -> x > 0) totalEarningsValue Seq.sum
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 4; ValueFunc = totalEarningsValue }
+  getGolfStat input totalEarningsMap (fun x -> x > 0) Seq.sum
