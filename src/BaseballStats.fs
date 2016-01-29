@@ -29,7 +29,7 @@ let getPlayerLink (input:DatabaseInput) : Option<string> =
   | [] -> None
   | firstLink::elements -> Some (firstLink.TryGetAttribute("href").Value.Value())
 
-let stat (html:HtmlDocument) input (valueFunc: int -> StatType) =
+let stat (html:HtmlDocument) input =
   // get first row where first column is total
   let statValue =
     html.Descendants ["tr"]
@@ -39,25 +39,25 @@ let stat (html:HtmlDocument) input (valueFunc: int -> StatType) =
 
   Success { FirstName = input.FirstName
             LastName = input.LastName
-            Stat = valueFunc (int statValue) }
+            Stat = input.ValueFunc (int statValue) }
 
-let getBaseballStat (input:DatabaseInput) (valueFunc: int -> StatType) =
+let getBaseballStat (input:DatabaseInput) =
   let link = getPlayerLink input
 
   match link with
   | None -> Failure RecordNotFound
   | Some linkValue ->
     let playerPage = BaseballPlayerSearch.Load(linkValue)
-    stat playerPage.Html input valueFunc
+    stat playerPage.Html input
 
 let getHomeruns firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8 }
-  getBaseballStat input Homeruns
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8; ValueFunc = Homeruns }
+  getBaseballStat input
 
 let getStrikeouts firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11 }
-  getBaseballStat input Strikeouts
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11; ValueFunc = Strikeouts }
+  getBaseballStat input 
 
 let getSteals firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12 }
-  getBaseballStat input Steals
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12; ValueFunc = Steals }
+  getBaseballStat input

@@ -68,6 +68,7 @@ let validateFailure expectedResponse code (result:HttpContext option) =
   |> validateStatus code
   |> validateResponse expectedResponse
 
+[<Literal>]
 let baseballHtml =
   """<html>
          <body>
@@ -114,6 +115,49 @@ let baseballHtml =
                     <td>38</td> <!-- OPS -->
                     <td>39</td> <!-- WAR -->
                 </tr>
+          </table>
+      </body>
+  </html>"""
+
+[<Literal>]
+let golfHtml =
+  """<html>
+         <body>
+             <table>
+                 <tbody>
+                     <tr>
+                        <td>login</td>
+                        <td>Win</td> <!-- Final finish -->
+                        <td>61-67-70-71=269</td> <!-- Final score -->
+                        <td>-27</td> <!-- Final score to par -->
+                        <td>$864,000</td> <!-- Final money -->
+                        <td>fedex</td>
+                    </tr>
+                    <tr>
+                        <td>login</td>
+                        <td>T15</td> <!-- Final finish -->
+                        <td>66-71-70-71=278</td> <!-- Final score -->
+                        <td>-28</td> <!-- Final score to par -->
+                        <td>$1,997,000</td> <!-- Final money -->
+                        <td>fedex</td>
+                    </tr>
+                    <tr>
+                        <td>login</td>
+                        <td>Win</td> <!-- Final finish -->
+                        <td>72-71-70-71=284</td> <!-- Final score -->
+                        <td>-18</td> <!-- Final score to par -->
+                        <td>$322,000</td> <!-- Final money -->
+                        <td>fedex</td>
+                   </tr>
+                   <tr>
+                        <td>login</td>
+                        <td>T33</td> <!-- Final finish -->
+                        <td>58-77-64-60=259</td> <!-- Final score -->
+                        <td>-17</td> <!-- Final score to par -->
+                        <td>$659,000</td> <!-- Final money -->
+                        <td>fedex</td>
+                   </tr>
+               </tbody>
           </table>
       </body>
   </html>"""
