@@ -1,5 +1,7 @@
 module Types
 
+open FSharp.Data
+
 type FailureCode =
   | RecordNotFound
 
@@ -25,7 +27,14 @@ type DatabaseInput = {
   FirstName : string
   LastName : string
   ColumnIndex : int
-  ValueFunc : int -> StatType
+  ValueFunction : int -> StatType
+}
+
+type GolfInput<'a> = {
+  Data : DatabaseInput
+  MapFunction : int -> HtmlNode -> int
+  FilterFunction : int -> bool
+  TotalFunction : seq<'a> -> int
 }
 
 type IDB =

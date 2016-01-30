@@ -39,7 +39,7 @@ let stat (html:HtmlDocument) input =
 
   Success { FirstName = input.FirstName
             LastName = input.LastName
-            Stat = input.ValueFunc (int statValue) }
+            Stat = input.ValueFunction (int statValue) }
 
 let getBaseballStat (input:DatabaseInput) =
   let link = getPlayerLink input
@@ -51,13 +51,13 @@ let getBaseballStat (input:DatabaseInput) =
     stat playerPage.Html input
 
 let getHomeruns firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8; ValueFunc = Homeruns }
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 8; ValueFunction = Homeruns }
   getBaseballStat input
 
 let getStrikeouts firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11; ValueFunc = Strikeouts }
-  getBaseballStat input 
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 11; ValueFunction = Strikeouts }
+  getBaseballStat input
 
 let getSteals firstName lastName =
-  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12; ValueFunc = Steals }
+  let input = { FirstName = firstName; LastName = lastName; ColumnIndex = 12; ValueFunction = Steals }
   getBaseballStat input
