@@ -37,3 +37,13 @@ body {
 .results {
   padding-top: 10px;
 }
+
+.oddRow {
+  height: 20px;
+  background: rgba(51,51,51,.6);
+}
+
+.evenRow {
+  height: 20px;
+  background: #e0e0eb;
+}
