@@ -25,3 +25,15 @@ function getStat(sport, endpoint) {
   request.open("GET", url, true);
   request.send();
 }
+
+function getGolfStats() {
+  getStat('Golf', 'LowestTournament');
+  getStat('Golf', 'LowestRound');
+  getStat('Golf', 'TotalEarnings');
+}
+
+function getBaseballStats() {
+  getStat('Baseball', 'Homeruns');
+  getStat('Baseball', 'Strikeouts');
+  getStat('Baseball', 'Steals');
+}

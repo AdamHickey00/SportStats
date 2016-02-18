@@ -1,47 +1,7 @@
 <html>
-  <script src="SportStats.js"></script>
   <head>
-    <style>
-      body {
-        background: #f0f0f5
-      }
-      .score {
-        float: right;
-      }
-      .name {
-        padding: 10px;
-        background: rgba(51,51,51,.6);
-      }
-      .golf {
-        float: left;
-      }
-      .baseball {
-        float: right;
-      }
-      .scoreContainer {
-        width: 1000px;
-        padding-top: 40px;
-        margin: 0 auto;
-      }
-      .statButton {
-        background-color: #cc6600;
-        border: 1px solid rgba(0,0,0,.1);
-        float: right;
-        color: white;
-      }
-      .name button {
-        font-size: 15px;
-      }
-      .name input {
-        font-size: 15px;
-      }
-      .lastName {
-        margin-right: 5px;
-      }
-      .results {
-        padding-top: 10px;
-      }
-    </style>
+    <script src="SportStats.js"></script>
+    <link rel="stylesheet" type="text/css" href="SportStats.css">
   </head>
   <body>
     <div class="scoreContainer">
@@ -49,19 +9,19 @@
         <div class="name">
           <input type="text" id="golfFirst" placeholder="Tiger"></input>
           <input type="text" id="golfLast" class="lastName" placeholder="Woods"></input>
-          <button class="statButton" type="button" onclick="getStat('Golf', 'LowestTournament')">Golf stats</button>
+          <button class="statButton" type="button" onclick="getGolfStats()">Golf stats</button>
         </div>
         <div class="results">
           <div>
-            <button type="button" onclick="getStat('Golf', 'LowestTournament')">Lowest tournament</button>
+            <label>Lowest tournament</label>
             <div id="LowestTournament" class="score">__</div>
           </div>
           <div>
-            <button type="button" onclick="getStat('Golf', 'LowestRound')">Lowest round</button>
+            <label>Lowest round</label>
             <div id="LowestRound" class="score">__</div>
           </div>
           <div>
-            <button type="button" onclick="getStat('Golf', 'TotalEarnings')">Total earnings</button>
+            <label>Total earnings</label>
             <div id="TotalEarnings" class="score">__</div>
           </div>
         </div>
@@ -71,19 +31,19 @@
         <div class="name">
           <input type="text" id="baseballFirst" placeholder="Ken"></input>
           <input type="text" id="baseballLast" class="lastName" placeholder="Griffey Jr"></input>
-          <button class="statButton" type="button" onclick="getStat('Baseball', 'Homeruns')">Baseball stats</button>
+          <button class="statButton" type="button" onclick="getBaseballStats()">Baseball stats</button>
         </div>
         <div class="results">
           <div>
-            <button type="button" onclick="getStat('Baseball', 'Homeruns')">Homeruns</button>
+            <label>Homeruns</label>
             <div id="Homeruns" class="score">__</div>
           </div>
           <div>
-            <button type="button" onclick="getStat('Baseball', 'Strikeouts')">Strikeouts</button>
+            <label>Strikeouts</label>
             <div id="Strikeouts" class="score">__</div>
           </div>
           <div>
-            <button type="button" onclick="getStat('Baseball', 'Steals')">Steals</button>
+            <label>Steals</label>
             <div id="Steals" class="score">__</div>
           </div>
         </div>
