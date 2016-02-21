@@ -37,6 +37,7 @@ body {
 .results {
   padding-top: 20px;
   width: 100%;
+  font-family: Helvetica, sans-serif;
 }
 .oddRow {
   height: 30px;
