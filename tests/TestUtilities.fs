@@ -1,5 +1,6 @@
 module TestUtilities
 
+open FSharp.Data
 open FsUnit
 open Suave.Http
 open Types
@@ -163,4 +164,52 @@ let golfHtml =
   </html>"""
 
 [<Literal>]
-let golfFailHtml = """<html><body></body></html>"""
+let golfFailHtml = """<html><body></body></html>""" 
+
+[<Literal>]
+let golfLowRoundHtml =
+  """<html>
+         <body>
+             <table>
+                 <tbody>
+                     <tr>
+                         <td>login</td>
+                         <td>T33</td> <!-- Final finish -->
+                         <td>58-77-64-60=259</td> <!-- Final score -->
+                         <td>-17</td> <!-- Final score to par -->
+                         <td>$659,000</td> <!-- Final money -->
+                         <td>fedex</td>
+                     </tr>
+               </tbody>
+          </table>
+      </body>
+  </html>"""
+  
+[<Literal>]
+let golfLowRoundEmptyHtml =
+  """<html>
+         <body>
+             <table>
+                 <tbody>
+                     <tr>
+                         <td>login</td>
+                         <td>T33</td> <!-- Final finish -->
+                         <td /> <!-- Final score -->
+                         <td>-17</td> <!-- Final score to par -->
+                         <td>$659,000</td> <!-- Final money -->
+                         <td>fedex</td>
+                     </tr>
+               </tbody>
+          </table>
+      </body>
+  </html>"""
+    
+let firstRow html = 
+  let doc = HtmlDocument.Parse html
+  
+  doc.Descendants ["table"]
+  |> Seq.head
+  |> (fun x -> x.Descendants ["tbody"])
+  |> Seq.head
+  |> (fun x -> x.Descendants ["tr"])
+  |> Seq.head  

@@ -32,8 +32,8 @@ type DatabaseInput = {
 
 type GolfInput<'a> = {
   Data : DatabaseInput
-  MapFunction : int -> HtmlNode -> int
-  FilterFunction : int -> bool
+  MapFunction : int -> HtmlNode -> int Option
+  FilterFunction : int Option -> bool
   TotalFunction : seq<'a> -> int
 }
 

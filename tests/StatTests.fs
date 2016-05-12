@@ -33,7 +33,7 @@ let ``Baseball strikeouts``() =
 [<Fact>]
 let ``Golf lowest tournament``() =
   let input = { FirstName = "Rory"; LastName = "Mcilroy"; ColumnIndex = 3; ValueFunction = LowestTournament }
-  let golfInput = { Data = input; MapFunction = GolfStats.lowestTournamentMap; FilterFunction = (fun x -> x < 0); TotalFunction = Seq.min }
+  let golfInput = { Data = input; MapFunction = GolfStats.lowestTournamentMap; FilterFunction = GolfStats.filterByValue (<) 0; TotalFunction = Seq.min }
   let expected = Success { FirstName = "Rory"; LastName = "Mcilroy"; Stat = LowestTournament -28}
   let doc = HtmlDocument.Parse golfHtml
 
@@ -43,7 +43,7 @@ let ``Golf lowest tournament``() =
 [<Fact>]
 let ``Golf lowest round``() =
   let input = { FirstName = "Tiger"; LastName = "Woods"; ColumnIndex = 2; ValueFunction = LowestRound }
-  let golfInput = { Data = input; MapFunction = GolfStats.lowestRoundMap; FilterFunction = (fun x -> x > 50); TotalFunction = Seq.min }
+  let golfInput = { Data = input; MapFunction = GolfStats.lowestRoundMap; FilterFunction = GolfStats.filterByValue (>) 50; TotalFunction = Seq.min }
   let expected = Success { FirstName = "Tiger"; LastName = "Woods"; Stat = LowestRound 58}
   let doc = HtmlDocument.Parse golfHtml
 
@@ -53,7 +53,7 @@ let ``Golf lowest round``() =
 [<Fact>]
 let ``Golf total earnings``() =
   let input = { FirstName = "Phil"; LastName = "Mickelson"; ColumnIndex = 4; ValueFunction = GolfStats.totalEarningsValue }
-  let golfInput = { Data = input; MapFunction = GolfStats.totalEarningsMap; FilterFunction = (fun x -> x > 0); TotalFunction = Seq.sum }
+  let golfInput = { Data = input; MapFunction = GolfStats.totalEarningsMap; FilterFunction = GolfStats.filterByValue (>) 0; TotalFunction = Seq.sum }
   let expected = Success { FirstName = "Phil"; LastName = "Mickelson"; Stat = TotalEarnings "$3,842,000"}
   let doc = HtmlDocument.Parse golfHtml
 
@@ -63,7 +63,7 @@ let ``Golf total earnings``() =
 [<Fact>]
 let ``Fail lowest tournament record not found``() =
   let input = { FirstName = "Rory"; LastName = "Mcilroy"; ColumnIndex = 3; ValueFunction = LowestTournament }
-  let golfInput = { Data = input; MapFunction = GolfStats.lowestTournamentMap; FilterFunction = (fun x -> x < 0); TotalFunction = Seq.min }
+  let golfInput = { Data = input; MapFunction = GolfStats.lowestTournamentMap; FilterFunction = GolfStats.filterByValue (<) 0; TotalFunction = Seq.min }
   let doc = HtmlDocument.Parse golfFailHtml
 
   match (GolfStats.stat doc golfInput) with
@@ -73,7 +73,7 @@ let ``Fail lowest tournament record not found``() =
 [<Fact>]
 let ``Golf lowest round record not found``() =
   let input = { FirstName = "Tiger"; LastName = "Woods"; ColumnIndex = 2; ValueFunction = LowestRound }
-  let golfInput = { Data = input; MapFunction = GolfStats.lowestRoundMap; FilterFunction = (fun x -> x > 50); TotalFunction = Seq.min }
+  let golfInput = { Data = input; MapFunction = GolfStats.lowestRoundMap; FilterFunction = GolfStats.filterByValue (>) 50; TotalFunction = Seq.min }
   let doc = HtmlDocument.Parse golfFailHtml
 
   match (GolfStats.stat doc golfInput) with
@@ -83,9 +83,20 @@ let ``Golf lowest round record not found``() =
 [<Fact>]
 let ``Golf total earnings record not found``() =
   let input = { FirstName = "Phil"; LastName = "Mickelson"; ColumnIndex = 4; ValueFunction = GolfStats.totalEarningsValue }
-  let golfInput = { Data = input; MapFunction = GolfStats.totalEarningsMap; FilterFunction = (fun x -> x > 0); TotalFunction = Seq.sum }
+  let golfInput = { Data = input; MapFunction = GolfStats.totalEarningsMap; FilterFunction = GolfStats.filterByValue (>) 0; TotalFunction = Seq.sum }
   let doc = HtmlDocument.Parse golfFailHtml
 
   match (GolfStats.stat doc golfInput) with
   | Failure RecordNotFound -> true
   | response -> failwith (sprintf "Expected Failure but found %A" response)
+
+[<Fact>]
+let ``Golf lowest round map``() =
+  let row = firstRow golfLowRoundHtml
+  (GolfStats.lowestRoundMap 2 row) |> should equal (Some 58)
+  
+[<Fact>]
+let ``Golf lowest round empty string``() =
+  let row = firstRow golfLowRoundEmptyHtml
+  
+  (GolfStats.lowestRoundMap 2 row) |> should equal None  
