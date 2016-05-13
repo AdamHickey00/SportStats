@@ -1,8 +1,14 @@
+#r "../packages/FSharp.Data/lib/net40/FSharp.Data.dll"
+  
+#load "Types.fs"
 #load "Monads.fs"
+#load "Utils.fs"
+#load "Money.fs"
+#load "GolfStats.fs"
 
 open Monads.Choice
 open System
-open System.String
+open FSharp.Data
 
 let input first last =
   choice {
@@ -30,3 +36,36 @@ let stripChars (chars:seq<char>) (value:string) =
   |> System.String.Concat
 
 stripChars ['$'; '~'; ','; ' '] "$8~ 8,000"
+
+[<Literal>]
+let golfLowRoundEmptyHtml =
+  """<html>
+         <body>
+             <table>
+                 <tbody>
+                     <tr>
+                         <td>login</td>
+                         <td>T33</td> <!-- Final finish -->
+                         <td>55-33</td> <!-- Final score -->
+                         <td>-17</td> <!-- Final score to par -->
+                         <td>$659,000</td> <!-- Final money -->
+                         <td>fedex</td>
+                     </tr>
+               </tbody>
+          </table>
+      </body>
+  </html>"""
+    
+let firstRow html = 
+  let doc = HtmlDocument.Parse html
+  
+  doc.Descendants ["table"]
+  |> Seq.head
+  |> (fun x -> x.Descendants ["tbody"])
+  |> Seq.head
+  |> (fun x -> x.Descendants ["tr"])
+  |> Seq.head
+  
+let row = firstRow golfLowRoundEmptyHtml
+
+GolfStats.lowestRoundMap 2 row
